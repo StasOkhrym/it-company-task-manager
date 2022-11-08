@@ -20,10 +20,10 @@ class Worker(AbstractUser):
 
 class Task(models.Model):
     PRIORITY_CHOICES = [
-        ("urgent", "Urgent"),
-        ("high", "High"),
-        ("medium", "Medium"),
-        ("low", "Low"),
+        (1, "Urgent"),
+        (2, "High"),
+        (3, "Medium"),
+        (4, "Low"),
     ]
     name = models.CharField(max_length=65)
     description = models.TextField()
@@ -34,3 +34,6 @@ class Task(models.Model):
     )
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
     assignees = models.ManyToManyField(Worker, related_name="tasks")
+
+    class Meta:
+        ordering = ["priority"]
