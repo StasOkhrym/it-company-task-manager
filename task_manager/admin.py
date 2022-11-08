@@ -5,7 +5,7 @@ from task_manager.models import Worker, TaskType, Position, Task
 
 
 @admin.register(Worker)
-class DriverAdmin(UserAdmin):
+class WorkerAdmin(UserAdmin):
     list_display = UserAdmin.list_display + ("position",)
     fieldsets = UserAdmin.fieldsets + (
         (("Additional info", {"fields": ("position",)}),)
