@@ -43,17 +43,27 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         context = super(TaskListView, self).get_context_data(**kwargs)
 
         name = self.request.GET.get("name", "")
+        is_completed = self.request.GET.get("is_completed", "")
 
-        context["search_form"] = TaskSearchForm(initial={"name": name})
+        context["search_form"] = TaskSearchForm(initial={"name": name,
+                                                         "is_completed": is_completed
+                                                         })
         return context
 
     def get_queryset(self):
         form = TaskSearchForm(self.request.GET)
 
         if form.is_valid():
+            if form.cleaned_data["is_completed"]:
+                return self.queryset.filter(
+                    name__icontains=form.cleaned_data["name"],
+                    is_completed=True
+                )
             return self.queryset.filter(
                 name__icontains=form.cleaned_data["name"]
             )
+
+
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
@@ -63,6 +73,7 @@ class TaskDetailView(LoginRequiredMixin, generic.DetailView):
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     model = Task
     fields = "__all__"
+    success_url = reverse_lazy("task_manager:task-list")
 
 
 class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):

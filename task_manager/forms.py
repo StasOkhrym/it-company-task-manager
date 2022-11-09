@@ -8,6 +8,9 @@ class TaskSearchForm(forms.Form):
         label="",
         widget=forms.TextInput(attrs={"placeholder": "Search by task name"}),
     )
+    is_completed = forms.BooleanField(
+        required=False
+    )
 
 
 class WorkerSearchForm(forms.Form):
