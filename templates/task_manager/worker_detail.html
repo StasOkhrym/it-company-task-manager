@@ -28,7 +28,7 @@
         <a href="{% url 'task_manager:task-detail' pk=task.id %}" class="list-group-item list-group-item-action list-group-item-danger">
         {% if task.is_completed %} <span class="btn btn-success disabled float-right"><i class="bi bi-check"></i> Task is done</span>{% endif %}
         <span><strong>Name:</strong> {{ task.name }}</span>
-        <span><strong>Priority:</strong> {{ task.priority }}</span>
+        <span><strong>Priority:</strong> {{ task.get_priority_display }}</span>
         <p class="text-muted"><strong>Description:</strong> {{task.description}}</p>
       </a>
 
@@ -36,7 +36,7 @@
         <a href="{% url 'task_manager:task-detail' pk=task.id %}" class="list-group-item list-group-item-action list-group-item-warning">
         {% if task.is_completed %} <span class="btn btn-success disabled float-right"><i class="bi bi-check"></i> Task is done</span>{% endif %}
         <span><strong>Name:</strong> {{ task.name }}</span>
-        <span><strong>Priority:</strong> {{ task.priority }}</span>
+        <span><strong>Priority:</strong> {{ task.get_priority_display }}</span>
         <p class="text-muted"><strong>Description:</strong> {{task.description}}</p>
       </a>
 
@@ -44,7 +44,7 @@
         <a href="{% url 'task_manager:task-detail' pk=task.id %}" class="list-group-item list-group-item-action list-group-item-info">
         {% if task.is_completed %} <span class="btn btn-success disabled float-right"><i class="bi bi-check"></i> Task is done</span>{% endif %}
         <span><strong>Name:</strong> {{ task.name }}</span>
-        <span><strong>Priority:</strong> {{ task.priority }}</span>
+        <span><strong>Priority:</strong> {{ task.get_priority_display }}</span>
         <p class="text-muted"><strong>Description:</strong> {{task.description}}</p>
       </a>
 
@@ -52,7 +52,7 @@
         <a href="{% url 'task_manager:task-detail' pk=task.id %}" class="list-group-item list-group-item-action list-group-item-secondary">
         {% if task.is_completed %} <span class="btn btn-success disabled float-right"><i class="bi bi-check"></i> Task is done</span>{% endif %}
         <span><strong>Name:</strong> {{ task.name }}</span>
-        <span><strong>Priority:</strong> {{ task.priority }}</span>
+        <span><strong>Priority:</strong> {{ task.get_priority_display }}</span>
         <p class="text-muted"><strong>Description:</strong> {{task.description}}</p>
       </a>
 
