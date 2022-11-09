@@ -10,6 +10,15 @@
     <a href="{% url 'task_manager:task-update' pk=task.id %}" class="btn btn-secondary link-to-page">
       Update
     </a>
+    {% if task.is_completed %}
+    <a href="{% url 'task_manager:toggle-task-state' pk=task.id %}" class="btn btn-danger link-to-page">
+      Mark as not completed
+    </a>
+    {% elif not task.is_completed %}
+      <a href="{% url 'task_manager:toggle-task-state' pk=task.id %}" class="btn btn-success link-to-page">
+        Mark as completed
+      </a>
+    {% endif %}
   </h1>
 
   {% if task.is_completed %}

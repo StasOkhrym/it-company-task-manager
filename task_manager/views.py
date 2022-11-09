@@ -7,8 +7,8 @@ from django.urls import reverse_lazy
 from django.utils.datetime_safe import datetime
 from django.views import generic
 
-from task_manager.forms import TaskSearchForm, WorkerSearchForm
-from task_manager.models import Worker, Task
+from task_manager.forms import TaskSearchForm, WorkerSearchForm, PositionSearchForm
+from task_manager.models import Worker, Task, Position
 
 
 def index(request):
@@ -36,17 +36,17 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
     model = Task
     context_object_name = "task_list"
     template_name = "task_manager/task_list.html"
-    queryset = Task.objects.all()
+    queryset = Task.objects.select_related("task_type")
     paginate_by = 5
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(TaskListView, self).get_context_data(**kwargs)
 
         name = self.request.GET.get("name", "")
-        is_completed = self.request.GET.get("is_completed", "")
+        not_completed = self.request.GET.get("not_completed", "")
 
         context["search_form"] = TaskSearchForm(initial={"name": name,
-                                                         "is_completed": is_completed
+                                                         "not_completed": not_completed
                                                          })
         return context
 
@@ -54,16 +54,14 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         form = TaskSearchForm(self.request.GET)
 
         if form.is_valid():
-            if form.cleaned_data["is_completed"]:
+            if form.cleaned_data["not_completed"]:
                 return self.queryset.filter(
                     name__icontains=form.cleaned_data["name"],
-                    is_completed=True
+                    is_completed=False
                 )
             return self.queryset.filter(
                 name__icontains=form.cleaned_data["name"]
             )
-
-
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
@@ -93,7 +91,7 @@ class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 class WorkerListView(LoginRequiredMixin, generic.ListView):
     model = Worker
-    queryset = Worker.objects.all()
+    queryset = Worker.objects.select_related("position")
     paginate_by = 5
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -133,6 +131,45 @@ class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("task_manager:worker-list")
 
 
+class PositionListView(LoginRequiredMixin, generic.ListView):
+    model = Position
+    paginate_by = 5
+    queryset = Position.objects.all()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(PositionListView, self).get_context_data(**kwargs)
+
+        name = self.request.GET.get("name", "")
+
+        context["search_form"] = PositionSearchForm(initial={"name": name})
+        return context
+
+    def get_queryset(self):
+        form = PositionSearchForm(self.request.GET)
+
+        if form.is_valid():
+            return self.queryset.filter(
+                name__icontains=form.cleaned_data["name"]
+            )
+
+
+class PositionDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Position
+
+
+class PositionCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Position
+
+
+class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Position
+
+
+class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Position
+
+
+
 @login_required
 def toggle_task_assign(request, pk):
     worker = Worker.objects.get(id=request.user.id)
@@ -142,4 +179,14 @@ def toggle_task_assign(request, pk):
         worker.tasks.remove(pk)
     else:
         worker.tasks.add(pk)
+    return HttpResponseRedirect(reverse_lazy("task_manager:task-detail", args=[pk]))
+
+
+@login_required
+def toggle_task_state(request, pk):
+    task = Task.objects.get(id=pk)
+    if not task.is_completed:
+        task.objects.update(is_completed=True)
+    else:
+        task.objects.update(is_completed=False)
     return HttpResponseRedirect(reverse_lazy("task_manager:task-detail", args=[pk]))

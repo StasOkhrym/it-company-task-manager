@@ -4,22 +4,29 @@
 {% block content %}
   <h1>
     Teams List
-    <a href="{% url 'task_manager:team-create' %}" class="btn btn-primary link-to-page">
+    <span class="float-right">
+      <a href="{% url 'task_manager:position-create' %}" class="btn btn-primary link-to-page">
        Create
-    </a>
+      </a>
+    </span>
   </h1>
   {% block search_form %}
   {% include "includes/search_form.html" %}
   {% endblock %}
 
-  {% if team_list %}
-    <ul class="list-group">
-      {% for team in team_list %}
-          <a href="{% url "task_manager:team-detail" pk=team.id %} "
-             class="list-group-item list-group-item-action list-group-item-secondary">
-            {{ team.id }} {{ team.name }} </a>
-      {% endfor %}
-    </ul>
+  {% if position_list %}
+    <table class="table table-hover">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>On this position</th>
+    </tr>
+    {% for position in position_list %}
+        <tr onclick="window.location='{% url 'task_manager:position-detail' pk=position.id%}'">
+        <td>{{ position.id }}</td>
+        <td>{{ position.name }}</td>
+        <td>{{ position.worker_set.count }} worker{{ num_visits|pluralize }}</td>
+    {% endfor %}
   {% else %}
     <p>There are no team in company!</p>
   {% endif %}
