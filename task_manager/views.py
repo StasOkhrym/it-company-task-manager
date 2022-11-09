@@ -179,7 +179,7 @@ class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
 class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Position
     fields = "__all__"
-    success_url = reverse_lazy("taxi:manufacturer-list")
+    success_url = reverse_lazy("task_manager:position-list")
 
 
 @login_required
