@@ -79,6 +79,26 @@ class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("task_manager:task-list")
 
 
+class WorkerListView(LoginRequiredMixin, generic.ListView):
+    pass
+
+
+class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
+    pass
+
+
+class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
+    pass
+
+
+class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
+    pass
+
+
+class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
+    pass
+
+
 @login_required
 def toggle_task_assign(request, pk):
     worker = Worker.objects.get(id=request.user.id)
