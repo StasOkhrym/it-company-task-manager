@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Company Task Manager</h1>
+    <p>Here you can manage current tasks for developers teams</p>
+    <h2>Dynamic content</h2>
+    <p>IT company now has the following record counts:</p>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Workers:</strong> {{ num_workers }}</li>
+        <li class="list-group-item"><strong>Tasks:</strong> {{ num_tasks }}</li>
+        <li class="list-group-item"><strong>Closest deadline expires in {{ closest_deadline }} day{{ closest_deadline|pluralize }}</strong></li>
+    </ul>
+  <br>
+    <p>You have visited this page
+        {{ num_visits }} time{{ num_visits|pluralize }}.
+    </p>
+{% endblock %}
