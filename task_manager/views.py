@@ -14,7 +14,9 @@ from task_manager.models import Worker, Task, Position
 def index(request):
     num_workers = Worker.objects.count()
     num_tasks = Task.objects.count()
-    deadlines = [(task.deadline - datetime.now().date()).days for task in Task.objects.all()]
+    deadlines = [
+        (task.deadline - datetime.now().date()).days for task in Task.objects.all()
+    ]
     expired_tasks = len(list(filter(lambda a: a < 0, deadlines)))
     closest_deadline = min(filter(lambda a: a >= 0, deadlines))
 
@@ -45,9 +47,9 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         name = self.request.GET.get("name", "")
         not_completed = self.request.GET.get("not_completed", "")
 
-        context["search_form"] = TaskSearchForm(initial={"name": name,
-                                                         "not_completed": not_completed
-                                                         })
+        context["search_form"] = TaskSearchForm(
+            initial={"name": name, "not_completed": not_completed}
+        )
         return context
 
     def get_queryset(self):
@@ -56,12 +58,9 @@ class TaskListView(LoginRequiredMixin, generic.ListView):
         if form.is_valid():
             if form.cleaned_data["not_completed"]:
                 return self.queryset.filter(
-                    name__icontains=form.cleaned_data["name"],
-                    is_completed=False
+                    name__icontains=form.cleaned_data["name"], is_completed=False
                 )
-            return self.queryset.filter(
-                name__icontains=form.cleaned_data["name"]
-            )
+            return self.queryset.filter(name__icontains=form.cleaned_data["name"])
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
@@ -79,9 +78,7 @@ class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
     fields = "__all__"
 
     def get_success_url(self):
-        return reverse_lazy(
-            "task_manager:task-detail", kwargs={"pk": self.object.pk}
-        )
+        return reverse_lazy("task_manager:task-detail", kwargs={"pk": self.object.pk})
 
 
 class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -107,9 +104,9 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
 
         if form.is_valid():
             return self.queryset.filter(
-                Q(first_name__icontains=form.cleaned_data["search"]) |
-                Q(first_name__icontains=form.cleaned_data["search"]) |
-                Q(username__icontains=form.cleaned_data["search"])
+                Q(first_name__icontains=form.cleaned_data["search"])
+                | Q(first_name__icontains=form.cleaned_data["search"])
+                | Q(username__icontains=form.cleaned_data["search"])
             )
 
 
@@ -148,9 +145,7 @@ class PositionListView(LoginRequiredMixin, generic.ListView):
         form = PositionSearchForm(self.request.GET)
 
         if form.is_valid():
-            return self.queryset.filter(
-                name__icontains=form.cleaned_data["name"]
-            )
+            return self.queryset.filter(name__icontains=form.cleaned_data["name"])
 
 
 class PositionDetailView(LoginRequiredMixin, generic.DetailView):
@@ -169,13 +164,10 @@ class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Position
 
 
-
 @login_required
 def toggle_task_assign(request, pk):
     worker = Worker.objects.get(id=request.user.id)
-    if (
-        Task.objects.get(id=pk) in worker.tasks.all()
-    ):
+    if Task.objects.get(id=pk) in worker.tasks.all():
         worker.tasks.remove(pk)
     else:
         worker.tasks.add(pk)
