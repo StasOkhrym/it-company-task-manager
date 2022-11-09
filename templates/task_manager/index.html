@@ -7,9 +7,21 @@
     <h2>Dynamic content</h2>
     <p>IT company now has the following record counts:</p>
     <ul class="list-group list-group-flush">
-        <li class="list-group-item"><strong>Workers:</strong> {{ num_workers }}</li>
-        <li class="list-group-item"><strong>Tasks:</strong> {{ num_tasks }}</li>
-        <li class="list-group-item"><strong>Closest deadline expires in {{ closest_deadline }} day{{ closest_deadline|pluralize }}</strong></li>
+        <li class="list-group-item list-group-item-secondary"><strong>Workers:</strong> {{ num_workers }}</li>
+        <li class="list-group-item list-group-item-secondary"><strong>Tasks:</strong> {{ num_tasks }}</li>
+
+        {% if closest_deadline == 0 %}
+           <li class="list-group-item list-group-item-warning"><strong>Closest deadline is today</strong></li>
+        {% else %}
+          <li class="list-group-item list-group-item-secondary"><strong>Closest deadline expires in {{ closest_deadline }} day{{ closest_deadline|pluralize }}</strong></li>
+        {% endif %}
+
+        {% if expired_tasks == 0 %}
+          <li class="list-group-item list-group-item-secondary"><strong>Good job!!! Company has no expired tasks</strong></li>
+        {% else %}
+          <li class="list-group-item list-group-item-danger"><strong>Company has {{ expired_tasks }} expired task{{ expired_tasks|pluralize }}</strong></li>
+        {% endif %}
+
     </ul>
   <br>
     <p>You have visited this page
