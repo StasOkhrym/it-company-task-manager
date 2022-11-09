@@ -4,9 +4,11 @@
 {% block content %}
     <h1>
       Task List
-      <a href="{% url "task_manager:task-create" %}" class="btn btn-primary link-to-page float-left">
-        Create
-      </a>
+      <span class="float-right">
+        <a href="{% url "task_manager:task-create" %}" class="btn btn-primary link-to-page float-left">
+          Create
+        </a>
+      </span>
     </h1>
   {% block search_form %}
   {% include "includes/search_form.html" %}

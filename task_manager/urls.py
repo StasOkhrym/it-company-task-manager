@@ -29,7 +29,7 @@ urlpatterns = [
     path("tasks/<int:pk>/delete/", TaskDeleteView.as_view(), name="task-delete"),
     path("workers/", WorkerListView.as_view(), name="worker-list"),
     path("workers/<int:pk>/", WorkerDetailView.as_view(), name="worker-detail"),
-    path("tasks/<int:pk>/create/", WorkerCreateView.as_view(), name="worker-create"),
+    path("tasks/create/", WorkerCreateView.as_view(), name="worker-create"),
     path("tasks/<int:pk>/update/", WorkerUpdateView.as_view(), name="worker-update"),
     path("tasks/<int:pk>/delete/", WorkerDeleteView.as_view(), name="worker-delete"),
 ]

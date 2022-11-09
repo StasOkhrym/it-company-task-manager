@@ -1,12 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.utils.datetime_safe import datetime
 from django.views import generic
 
-from task_manager.forms import TaskSearchForm
+from task_manager.forms import TaskSearchForm, WorkerSearchForm
 from task_manager.models import Worker, Task
 
 
@@ -80,23 +81,45 @@ class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
 
 
 class WorkerListView(LoginRequiredMixin, generic.ListView):
-    pass
+    model = Worker
+    queryset = Worker.objects.all()
+    paginate_by = 5
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(WorkerListView, self).get_context_data(**kwargs)
+
+        search = self.request.GET.get("search", "")
+
+        context["search_form"] = WorkerSearchForm(initial={"search": search})
+        return context
+
+    def get_queryset(self):
+        form = WorkerSearchForm(self.request.GET)
+
+        if form.is_valid():
+            return self.queryset.filter(
+                Q(first_name__icontains=form.cleaned_data["search"]) |
+                Q(first_name__icontains=form.cleaned_data["search"]) |
+                Q(username__icontains=form.cleaned_data["search"])
+            )
 
 
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
-    pass
+    model = Worker
+    queryset = Worker.objects.all()
 
 
 class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
-    pass
+    model = Worker
 
 
 class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
-    pass
+    model = Worker
 
 
 class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
-    pass
+    model = Worker
+    success_url = reverse_lazy("task_manager:worker-list")
 
 
 @login_required
