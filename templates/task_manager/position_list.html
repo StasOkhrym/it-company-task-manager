@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>
+    Teams List
+    <a href="{% url 'task_manager:team-create' %}" class="btn btn-primary link-to-page">
+       Create
+    </a>
+  </h1>
+  {% block search_form %}
+  {% include "includes/search_form.html" %}
+  {% endblock %}
+
+  {% if team_list %}
+    <ul class="list-group">
+      {% for team in team_list %}
+          <a href="{% url "task_manager:team-detail" pk=team.id %} "
+             class="list-group-item list-group-item-action list-group-item-secondary">
+            {{ team.id }} {{ team.name }} </a>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>There are no team in company!</p>
+  {% endif %}
+  <br>
+{% endblock %}
