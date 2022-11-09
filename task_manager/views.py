@@ -117,10 +117,18 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
 
 class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
     model = Worker
+    fields = "__all__"
+
+    def get_success_url(self):
+        return reverse_lazy("task_manager:worker-detail", args=[self.object.pk])
 
 
 class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Worker
+    fields = "__all__"
+
+    def get_success_url(self):
+        return reverse_lazy("task_manager:worker-detail", args=[self.object.pk])
 
 
 class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
@@ -154,14 +162,24 @@ class PositionDetailView(LoginRequiredMixin, generic.DetailView):
 
 class PositionCreateView(LoginRequiredMixin, generic.CreateView):
     model = Position
+    fields = "__all__"
+
+    def get_success_url(self):
+        return reverse_lazy("task_manager:position-detail", args=[self.object.pk])
 
 
 class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Position
+    fields = "__all__"
+
+    def get_success_url(self):
+        return reverse_lazy("task_manager:position-detail", args=[self.object.pk])
 
 
 class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Position
+    fields = "__all__"
+    success_url = reverse_lazy("taxi:manufacturer-list")
 
 
 @login_required
