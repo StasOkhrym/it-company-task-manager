@@ -196,7 +196,8 @@ def toggle_task_assign(request, pk):
 def toggle_task_state(request, pk):
     task = Task.objects.get(id=pk)
     if not task.is_completed:
-        task.objects.update(is_completed=True)
+        task.is_completed = True
     else:
-        task.objects.update(is_completed=False)
+        task.is_completed = False
+    task.save()
     return HttpResponseRedirect(reverse_lazy("task_manager:task-detail", args=[pk]))
