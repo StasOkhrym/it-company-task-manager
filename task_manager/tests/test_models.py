@@ -32,7 +32,7 @@ class ModelTests(TestCase):
             username=username,
             first_name=first_name,
             last_name=last_name,
-            position=position
+            position=position,
         )
 
         self.assertEqual(str(driver), f"{first_name} {last_name}")
@@ -48,7 +48,7 @@ class ModelTests(TestCase):
             password=password,
             first_name=first_name,
             last_name=last_name,
-            position=position
+            position=position,
         )
 
         self.assertEqual(worker.username, username)
@@ -58,7 +58,7 @@ class ModelTests(TestCase):
         self.assertEqual(worker.position, position)
 
     def test_task_str(self):
-        name = "TestName",
+        name = ("TestName",)
         description = "test"
         deadline = datetime.datetime.now().date()
         is_completed = False
@@ -71,7 +71,7 @@ class ModelTests(TestCase):
             deadline=deadline,
             is_completed=is_completed,
             priority=priority,
-            task_type=task_type
+            task_type=task_type,
         )
 
         self.assertEqual(str(task), f"{name} (Priority: {priority})")

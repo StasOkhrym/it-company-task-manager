@@ -17,7 +17,9 @@ class Position(models.Model):
 
 
 class Worker(AbstractUser):
-    position = models.ForeignKey(Position, on_delete=models.CASCADE, null=True, default=None, blank=True)
+    position = models.ForeignKey(
+        Position, on_delete=models.CASCADE, null=True, blank=True, default=None
+    )
 
     class Meta:
         verbose_name = "worker"
@@ -38,9 +40,7 @@ class Task(models.Model):
     description = models.TextField()
     deadline = models.DateField()
     is_completed = models.BooleanField()
-    priority = models.IntegerField(
-        choices=PRIORITY_CHOICES, default=3
-    )
+    priority = models.IntegerField(choices=PRIORITY_CHOICES, default=3)
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
     assignees = models.ManyToManyField(Worker, related_name="tasks")
 

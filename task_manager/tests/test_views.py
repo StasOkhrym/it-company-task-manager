@@ -22,9 +22,7 @@ class PrivateTests(TestCase):
         TaskType.objects.create(name="test")
         TaskType.objects.create(name="test1")
         self.user = get_user_model().objects.create_user(
-            username="test_user",
-            password="1qazcde3",
-            position_id=1
+            username="test_user", password="1qazcde3", position_id=1
         )
         Task.objects.create(
             name="test",
@@ -32,7 +30,7 @@ class PrivateTests(TestCase):
             deadline=datetime.datetime.now(),
             is_completed=False,
             priority=3,
-            task_type_id=1
+            task_type_id=1,
         )
         self.client.force_login(self.user)
 
@@ -103,4 +101,3 @@ class PrivateTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "task_manager/worker_detail.html")
-

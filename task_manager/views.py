@@ -128,11 +128,9 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
 
         not_completed = self.request.GET.get("not_completed", "")
 
-        worker = Worker.objects.get(id=self.kwargs['pk'])
+        worker = Worker.objects.get(id=self.kwargs["pk"])
         if not_completed:
-            context["task_list"] = worker.tasks.filter(
-                is_completed=False
-            )
+            context["task_list"] = worker.tasks.filter(is_completed=False)
         else:
             context["task_list"] = worker.tasks.all()
 
@@ -244,10 +242,8 @@ class TaskTypeDetailView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(TaskTypeDetailView, self).get_context_data(**kwargs)
 
-        task_type = TaskType.objects.get(id=self.kwargs['pk'])
-        tasks = Task.objects.filter(
-            task_type_id=task_type.id
-        )
+        task_type = TaskType.objects.get(id=self.kwargs["pk"])
+        tasks = Task.objects.filter(task_type_id=task_type.id)
         context["tasks"] = tasks
 
         return context

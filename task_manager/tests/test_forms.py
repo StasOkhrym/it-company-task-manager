@@ -10,16 +10,14 @@ class PrivateWorkerTests(TestCase):
     def setUp(self) -> None:
         Position.objects.create(name="test")
         self.user = get_user_model().objects.create_user(
-            username="test_user",
-            password="test1234",
-            position_id=1
+            username="test_user", password="test1234", position_id=1
         )
         self.worker = get_user_model().objects.create_user(
             username="worker.user",
             first_name="TEST",
             last_name="USER",
             password="1qazcde3",
-            position_id=1
+            position_id=1,
         )
         self.client.force_login(self.user)
 
@@ -43,22 +41,17 @@ class PrivateWorkerTests(TestCase):
             reverse("task_manager:worker-delete", kwargs={"pk": self.worker.id})
         )
         self.assertEqual(response.status_code, 302)
-        self.assertFalse(
-            get_user_model().objects.filter(id=self.worker.id).exists()
-        )
+        self.assertFalse(get_user_model().objects.filter(id=self.worker.id).exists())
 
     def test_search_worker_form(self):
         get_user_model().objects.create_user(
             username="test.username",
             password="1qazcde3",
         )
-        response = self.client.get(
-            reverse("task_manager:worker-list") + "?model=d"
-        )
+        response = self.client.get(reverse("task_manager:worker-list") + "?model=d")
         workers = get_user_model().objects.filter(username__icontains="d")
 
-        self.assertNotEqual(list(response.context["worker_list"]), list(
-            workers))
+        self.assertNotEqual(list(response.context["worker_list"]), list(workers))
         self.assertEqual(len(response.context["worker_list"]), 3)
         self.assertEqual(len(workers), 0)
 
@@ -81,21 +74,15 @@ class PositionTests(TestCase):
         self.assertEqual(Position.objects.get(id=1).name, "Narnia")
 
     def test_update_position(self):
-        position = Position.objects.create(
-            name="Doors"
-        )
+        position = Position.objects.create(name="Doors")
         form_data = {"name": "Not Doors"}
         response = self.client.post(
-            reverse(
-                "task_manager:position-update", kwargs={"pk": position.id}
-            ),
+            reverse("task_manager:position-update", kwargs={"pk": position.id}),
             data=form_data,
         )
         Position.objects.get(id=position.id).refresh_from_db()
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(
-            Position.objects.get(id=position.id).name, "Not Doors"
-        )
+        self.assertEqual(Position.objects.get(id=position.id).name, "Not Doors")
 
     def test_delete_position(self):
         position = Position.objects.create(
@@ -105,20 +92,15 @@ class PositionTests(TestCase):
             reverse("task_manager:position-delete", kwargs={"pk": position.id})
         )
         self.assertEqual(response.status_code, 302)
-        self.assertFalse(
-            Position.objects.filter(id=position.id).exists()
-        )
+        self.assertFalse(Position.objects.filter(id=position.id).exists())
 
     def test_search_position_form(self):
         Position.objects.create(name="SanYong")
         Position.objects.create(name="TesYong")
-        response = self.client.get(
-            reverse("task_manager:position-list") + "?name=a"
-        )
+        response = self.client.get(reverse("task_manager:position-list") + "?name=a")
         manufacturers = Position.objects.filter(name__icontains="a")
 
-        self.assertEqual(list(response.context["position_list"]), list(
-            manufacturers))
+        self.assertEqual(list(response.context["position_list"]), list(manufacturers))
         self.assertEqual(Position.objects.count(), 2)
         self.assertEqual(len(manufacturers), 1)
 
@@ -141,21 +123,15 @@ class TaskTypeTests(TestCase):
         self.assertEqual(TaskType.objects.get(id=1).name, "Narnia")
 
     def test_update_task_type(self):
-        task_type = TaskType.objects.create(
-            name="Doors"
-        )
+        task_type = TaskType.objects.create(name="Doors")
         form_data = {"name": "Not Doors"}
         response = self.client.post(
-            reverse(
-                "task_manager:task-type-update", kwargs={"pk": task_type.id}
-            ),
+            reverse("task_manager:task-type-update", kwargs={"pk": task_type.id}),
             data=form_data,
         )
         TaskType.objects.get(id=task_type.id).refresh_from_db()
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(
-            TaskType.objects.get(id=task_type.id).name, "Not Doors"
-        )
+        self.assertEqual(TaskType.objects.get(id=task_type.id).name, "Not Doors")
 
     def test_delete_task_type(self):
         task_type = TaskType.objects.create(
@@ -165,20 +141,15 @@ class TaskTypeTests(TestCase):
             reverse("task_manager:task-type-delete", kwargs={"pk": task_type.id})
         )
         self.assertEqual(response.status_code, 302)
-        self.assertFalse(
-            TaskType.objects.filter(id=task_type.id).exists()
-        )
+        self.assertFalse(TaskType.objects.filter(id=task_type.id).exists())
 
     def test_search_task_type_form(self):
         TaskType.objects.create(name="SanYong")
         TaskType.objects.create(name="TesYong")
-        response = self.client.get(
-            reverse("task_manager:task-type-list") + "?name=a"
-        )
+        response = self.client.get(reverse("task_manager:task-type-list") + "?name=a")
         manufacturers = TaskType.objects.filter(name__icontains="a")
 
-        self.assertEqual(list(response.context["task_type_list"]), list(
-            manufacturers))
+        self.assertEqual(list(response.context["task_type_list"]), list(manufacturers))
         self.assertEqual(TaskType.objects.count(), 2)
         self.assertEqual(len(manufacturers), 1)
 
@@ -200,11 +171,9 @@ class TaskTests(TestCase):
             "is_completed": False,
             "priority": 3,
             "task_type": self.task_type.id,
-            "assignees": [self.user.id]
+            "assignees": [self.user.id],
         }
-        response = self.client.post(
-            reverse("task_manager:task-create"), data=form_data
-        )
+        response = self.client.post(reverse("task_manager:task-create"), data=form_data)
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Task.objects.get(id=1).name, "TestName")
@@ -216,7 +185,7 @@ class TaskTests(TestCase):
             deadline=datetime.datetime.now().date(),
             is_completed=False,
             priority=3,
-            task_type=self.task_type
+            task_type=self.task_type,
         )
         form_data = {
             "name": "TestName",
@@ -225,19 +194,15 @@ class TaskTests(TestCase):
             "is_completed": False,
             "priority": 3,
             "task_type": self.task_type.id,
-            "assignees": [self.user.id]
+            "assignees": [self.user.id],
         }
         response = self.client.post(
-            reverse(
-                "task_manager:task-update", kwargs={"pk": task.id}
-            ),
+            reverse("task_manager:task-update", kwargs={"pk": task.id}),
             data=form_data,
         )
         Task.objects.get(id=task.id).refresh_from_db()
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(
-            Task.objects.get(id=task.id).name, "TestName"
-        )
+        self.assertEqual(Task.objects.get(id=task.id).name, "TestName")
 
     def test_delete_task_type(self):
         task = Task.objects.create(
@@ -246,15 +211,13 @@ class TaskTests(TestCase):
             deadline=datetime.datetime.now().date(),
             is_completed=False,
             priority=3,
-            task_type=self.task_type
+            task_type=self.task_type,
         )
         response = self.client.post(
             reverse("task_manager:task-delete", kwargs={"pk": task.id})
         )
         self.assertEqual(response.status_code, 302)
-        self.assertFalse(
-            Task.objects.filter(id=task.id).exists()
-        )
+        self.assertFalse(Task.objects.filter(id=task.id).exists())
 
     def test_search_task_form(self):
         Task.objects.create(
@@ -263,7 +226,7 @@ class TaskTests(TestCase):
             deadline=datetime.datetime.now().date(),
             is_completed=False,
             priority=3,
-            task_type=self.task_type
+            task_type=self.task_type,
         )
         Task.objects.create(
             name="Doars",
@@ -271,15 +234,12 @@ class TaskTests(TestCase):
             deadline=datetime.datetime.now().date(),
             is_completed=False,
             priority=3,
-            task_type=self.task_type
+            task_type=self.task_type,
         )
-        response = self.client.get(
-            reverse("task_manager:task-list") + "?name=a"
-        )
+        response = self.client.get(reverse("task_manager:task-list") + "?name=a")
         tasks = Task.objects.filter(name__icontains="a")
 
-        self.assertEqual(list(response.context["task_list"]), list(
-            tasks))
+        self.assertEqual(list(response.context["task_list"]), list(tasks))
         self.assertEqual(Task.objects.count(), 2)
         self.assertEqual(len(tasks), 1)
 
@@ -290,7 +250,7 @@ class TaskTests(TestCase):
             deadline=datetime.datetime.now().date(),
             is_completed=False,
             priority=3,
-            task_type=self.task_type
+            task_type=self.task_type,
         )
 
         response_add = self.client.post(
@@ -314,7 +274,7 @@ class TaskTests(TestCase):
             deadline=datetime.datetime.now().date(),
             is_completed=False,
             priority=3,
-            task_type=self.task_type
+            task_type=self.task_type,
         )
 
         response_add = self.client.post(

@@ -10,16 +10,12 @@ class AdminSiteTest(TestCase):
         self.client = Client()
         self.test_position = Position.objects.create(name="test")
         self.admin_user = get_user_model().objects.create_superuser(
-            username="admin.user",
-            password="admin1234",
-            position=self.test_position
+            username="admin.user", password="admin1234", position=self.test_position
         )
         self.client.force_login(self.admin_user)
 
         self.worker = get_user_model().objects.create_user(
-            username="test_driver",
-            password="test12345",
-            position=self.test_position
+            username="test_driver", password="test12345", position=self.test_position
         )
 
     def test_worker_position_listed(self):

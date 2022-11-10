@@ -41,9 +41,7 @@ class TaskSearchForm(forms.Form):
         label="",
         widget=forms.TextInput(attrs={"placeholder": "Search by task name"}),
     )
-    not_completed = forms.BooleanField(
-        required=False
-    )
+    not_completed = forms.BooleanField(required=False)
 
 
 class WorkerSearchForm(forms.Form):
@@ -56,9 +54,7 @@ class WorkerSearchForm(forms.Form):
 
 
 class WorkerTaskFilterForm(forms.Form):
-    not_completed = forms.BooleanField(
-        required=False
-    )
+    not_completed = forms.BooleanField(required=False)
 
 
 class PositionSearchForm(forms.Form):
@@ -66,7 +62,7 @@ class PositionSearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search by position name"})
+        widget=forms.TextInput(attrs={"placeholder": "Search by position name"}),
     )
 
 
@@ -75,5 +71,5 @@ class TaskTypeSearchForm(forms.Form):
         max_length=255,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search by task type name"})
+        widget=forms.TextInput(attrs={"placeholder": "Search by task type name"}),
     )
