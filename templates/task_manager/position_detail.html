@@ -18,6 +18,9 @@
   <ul>
     {% for worker in position.worker_set.all %}
       <a href="{% url 'task_manager:worker-detail' pk=worker.id %}" class="list-group-item list-group-item-action list-group-item-secondary">{{ driver.username }} ({{ driver.first_name }} {{ driver.last_name }})</a>
+    {% empty %}
+      For now no one works on this position.
     {% endfor %}
+
   </ul>
 {% endblock %}
