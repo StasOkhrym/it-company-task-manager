@@ -3,10 +3,11 @@
 {% block content %}
   <h1>Delete {{ team.name }} Team?</h1>
   <i>All information related to this team will be lost!</i>
+
   <form action="" method="post">
     {% csrf_token %}
-
+    <hr>
     <input type="submit" value="Yes" class="btn btn-danger">
-    <a href="{% url 'task_manager:team-detail' pk=team.id %}" class = "btn btn-secondary">Cancel</a>
+    <a href="{% url 'task_manager:position-detail' pk=position.id %}" class = "btn btn-secondary">Cancel</a>
   </form>
 {% endblock %}
