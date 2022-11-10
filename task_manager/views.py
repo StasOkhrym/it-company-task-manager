@@ -252,6 +252,7 @@ class TaskTypeDetailView(LoginRequiredMixin, generic.DetailView):
 class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
     model = TaskType
     template_name = "task_manager/task_type_form.html"
+    context_object_name = "task_type"
     fields = "__all__"
 
     def get_success_url(self):
@@ -261,6 +262,7 @@ class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
 class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = TaskType
     template_name = "task_manager/task_type_form.html"
+    context_object_name = "task_type"
     fields = "__all__"
 
     def get_success_url(self):
@@ -270,6 +272,7 @@ class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
 class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = TaskType
     template_name = "task_manager/task_type_confirm_delete.html"
+    context_object_name = "task_type"
     success_url = reverse_lazy("task_manager:task-type-list")
 
 

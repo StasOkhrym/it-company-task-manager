@@ -9,7 +9,7 @@
 
     <input type="submit" value="Submit" class="btn btn-primary">
     {% if object %}
-      <a href="{% url 'task_manager:task-detail' pk=task_type.id %}" class="btn btn-secondary">Cancel</a>
+      <a href="{% url 'task_manager:task-type-detail' pk=task_type.id %}" class="btn btn-secondary">Cancel</a>
     {% else %}
       <a href="{% url 'task_manager:task-type-list' %}" class="btn btn-secondary">Cancel</a>
     {% endif %}
