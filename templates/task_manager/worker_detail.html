@@ -19,13 +19,16 @@
   <p><strong>Last name:</strong> {{ worker.last_name }}</p>
   <p><strong>Position:</strong> {{ worker.position }}</p>
   <p><strong>Is staff:</strong> {{ worker.is_staff }}</p>
-
+  {% block search_form %}
+  {% include "includes/search_form.html" %}
+  {% endblock %}
+  <br>
   <div class="ml-3">
     <h4>Tasks</h4>
 
     {% for task in worker.tasks.all %}
       {% if task.priority == 1 %}
-        <a href="{% url 'task_manager:task-detail' pk=task.id %}" class="list-group-item list-group-item-action list-group-item-danger">
+        <a  style="opacity: 1" href="{% url 'task_manager:task-detail' pk=task.id %}" class="list-group-item list-group-item-action list-group-item-danger">
         {% if task.is_completed %} <span class="btn btn-success disabled float-right"><i class="bi bi-check"></i> Task is done</span>{% endif %}
         <span><strong>Name:</strong> {{ task.name }}</span>
         <span><strong>Priority:</strong> {{ task.get_priority_display }}</span>

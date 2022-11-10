@@ -22,6 +22,12 @@ class WorkerSearchForm(forms.Form):
     )
 
 
+class WorkerTaskFilterForm(forms.Form):
+    not_completed = forms.BooleanField(
+        required=False
+    )
+
+
 class PositionSearchForm(forms.Form):
     name = forms.CharField(
         max_length=255,

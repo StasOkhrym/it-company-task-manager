@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.utils.datetime_safe import datetime
 from django.views import generic
 
-from task_manager.forms import TaskSearchForm, WorkerSearchForm, PositionSearchForm
+from task_manager.forms import TaskSearchForm, WorkerSearchForm, PositionSearchForm, WorkerTaskFilterForm
 from task_manager.models import Worker, Task, Position
 
 
@@ -113,6 +113,20 @@ class WorkerListView(LoginRequiredMixin, generic.ListView):
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     model = Worker
     queryset = Worker.objects.all()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(WorkerDetailView, self).get_context_data(**kwargs)
+
+        not_completed = self.request.GET.get("not_completed", "")
+
+        context["search_form"] = WorkerTaskFilterForm(initial={"not_completed": not_completed})
+        return context
+
+    def get_queryset(self):
+        form = WorkerSearchForm(self.request.GET)
+
+        if form.is_valid():
+            return self.queryset
 
 
 class WorkerCreateView(LoginRequiredMixin, generic.CreateView):

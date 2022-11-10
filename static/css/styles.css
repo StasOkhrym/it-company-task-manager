@@ -1,6 +1,19 @@
+body {
+    background-image: url('/static/background.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.link-to-page {
+    float: right;
+    margin: 0 2px 0 2px;
+}
+
 .content {
     padding-top: 30px;
     width: 80%;
     min-height: 100vh;
     background-color: #BABCBE;
 }
+
