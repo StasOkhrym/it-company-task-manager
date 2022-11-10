@@ -125,16 +125,19 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
 
         not_completed = self.request.GET.get("not_completed", "")
 
+        worker = Worker.objects.get(id=self.kwargs['pk'])
+        if not_completed:
+            context["task_list"] = worker.tasks.filter(
+                is_completed=False
+            )
+        else:
+            context["task_list"] = worker.tasks.all()
+
         context["search_form"] = WorkerTaskFilterForm(
             initial={"not_completed": not_completed}
         )
+
         return context
-
-    def get_queryset(self):
-        form = WorkerSearchForm(self.request.GET)
-
-        if form.is_valid():
-            return self.queryset
 
 
 class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
