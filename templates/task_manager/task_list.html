@@ -5,16 +5,20 @@
     <h1>
       Task List
       <span class="float-right">
-        <a href="{% url "task_manager:task-create" %}" class="btn btn-primary link-to-page float-left">
+        <a href="{% url "task_manager:task-create" %}" class="btn btn-primary link-to-page">
           Create
         </a>
       </span>
     </h1>
+    <span class="float-right">
+    <a href="{% url "task_manager:task-type-list" %}" class="btn btn-secondary link-to-page">
+      Show all task types
+    </a>
+  </span>
   {% block search_form %}
   {% include "includes/search_form.html" %}
   {% endblock %}
   <br>
-
 
     {% if task_list %}
     <table class="table table-hover">

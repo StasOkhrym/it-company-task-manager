@@ -32,7 +32,7 @@
   <h1>
     Assignees:
 
-    {% if car in user.cars.all %}
+    {% if task in user.tasks.all %}
       <a href="{% url 'task_manager:toggle-task-assign' pk=task.id %}" class="btn btn-danger link-to-page">
         Delete me from this task
       </a>

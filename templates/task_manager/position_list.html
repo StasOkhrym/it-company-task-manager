@@ -25,7 +25,7 @@
         <tr onclick="window.location='{% url 'task_manager:position-detail' pk=position.id%}'">
         <td>{{ position.id }}</td>
         <td>{{ position.name }}</td>
-        <td>{{ position.worker_set.count }} worker{{ num_visits|pluralize }}</td>
+        <td>{{ position.worker_set.count }} worker{{ position.worker_set.count|pluralize }}</td>
     {% endfor %}
   {% else %}
     <p>There are no team in company!</p>

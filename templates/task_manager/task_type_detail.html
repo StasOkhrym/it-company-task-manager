@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+  <h1>
+    {{ task_type.name }}
+    <a href="{% url 'task_manager:task-type-delete' pk=task_type.id %}" class="btn btn-danger link-to-page">
+      Delete
+    </a>
+
+    <a href="{% url 'task_manager:task-type-update' pk=task_type.id %}" class="btn btn-secondary link-to-page">
+      Update
+    </a>
+  </h1>
+  <h2>
+    Tasks of this type:
+  </h2>
+  <hr>
+  <ul>
+    {% for task in tasks %}
+      <a href="{% url 'task_manager:task-detail' pk=task.id %}" class="list-group-item list-group-item-action list-group-item-secondary">{{ task.name }}</a>
+    {% endfor %}
+  </ul>
+{% endblock %}

@@ -217,6 +217,7 @@ class TaskTypeListView(LoginRequiredMixin, generic.ListView):
     paginate_by = 5
     queryset = TaskType.objects.all()
     context_object_name = "task_type_list"
+    template_name = "task_manager/task_type_list.html"
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(TaskTypeListView, self).get_context_data(**kwargs)
@@ -237,12 +238,24 @@ class TaskTypeListView(LoginRequiredMixin, generic.ListView):
 
 class TaskTypeDetailView(LoginRequiredMixin, generic.DetailView):
     model = TaskType
-    context_object_name = "task_type_detail"
+    context_object_name = "task_type"
+    template_name = "task_manager/task_type_detail.html"
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(TaskTypeDetailView, self).get_context_data(**kwargs)
+
+        task_type = TaskType.objects.get(id=self.kwargs['pk'])
+        tasks = Task.objects.filter(
+            task_type_id=task_type.id
+        )
+        context["tasks"] = tasks
+
+        return context
 
 
 class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
     model = TaskType
-    context_object_name = "task_type_form"
+    template_name = "task_manager/task_type_form.html"
     fields = "__all__"
 
     def get_success_url(self):
@@ -251,7 +264,7 @@ class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
 
 class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = TaskType
-    context_object_name = "task_type_form"
+    template_name = "task_manager/task_type_form.html"
     fields = "__all__"
 
     def get_success_url(self):
@@ -260,7 +273,7 @@ class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = TaskType
-    context_object_name = "task_type_confirm_delete"
+    template_name = "task_manager/task_type_confirm_delete.html"
     success_url = reverse_lazy("task_manager:task-type-list")
 
 
