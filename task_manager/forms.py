@@ -3,7 +3,7 @@ from django import forms
 from task_manager.models import Task
 
 
-class TaskCreateForm(forms.ModelForm):
+class TaskForm(forms.ModelForm):
     deadline = forms.DateField(
         widget=forms.SelectDateWidget,
     )
