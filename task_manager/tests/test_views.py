@@ -36,6 +36,23 @@ class PrivateTests(TestCase):
         )
         self.client.force_login(self.user)
 
+    def test_task_type_list(self):
+        response = self.client.get(reverse("task_manager:task-type-list"))
+        task_types = TaskType.objects.all()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            list(response.context["task_type_list"]),
+            list(task_types),
+        )
+        self.assertTemplateUsed(response, "task_manager/task_type_list.html")
+
+    def test_task_type_detail(self):
+        response = self.client.get(reverse("task_manager:task-type-detail", args=[1]))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "task_manager/task_type_detail.html")
+
     def test_task_list(self):
         response = self.client.get(reverse("task_manager:task-list"))
         tasks = Task.objects.all()
