@@ -6,7 +6,7 @@
       Task List
       <span class="float-right">
         <a href="{% url "task_manager:task-create" %}" class="btn btn-primary link-to-page">
-          Create
+          <i class="bi bi-plus-lg"></i> Create
         </a>
       </span>
     </h1>
@@ -36,7 +36,8 @@
         <td>{{ task.name }}</td>
         <td>{{ task.deadline | date:"d M Y" }}</td>
         <td>{{ task.task_type }}</td>
-        <td>{{ task.get_priority_display }}</td>
+        <td>{{ task.get_priority_display }}
+        {% if task.is_completed %} <span class="btn btn-success disabled float-right"><i class="bi bi-check"></i> Task is done</span>{% endif %}</td>
 
           {% elif  task.priority == 2 %}
       <tr class="table-warning" onclick="window.location='{% url "task_manager:task-detail" pk=task.id%}'">
@@ -44,7 +45,8 @@
         <td>{{ task.name }}</td>
         <td>{{ task.deadline | date:"d M Y" }}</td>
         <td>{{ task.task_type }}</td>
-        <td>{{ task.get_priority_display }}</td>
+        <td>{{ task.get_priority_display }}
+        {% if task.is_completed %} <span class="btn btn-success disabled float-right"><i class="bi bi-check"></i> Task is done</span>{% endif %}</td>
       </tr>
 
       {% elif  task.priority == 3 %}
@@ -53,7 +55,8 @@
         <td>{{ task.name }}</td>
         <td>{{ task.deadline | date:"d M Y" }}</td>
         <td>{{ task.task_type }}</td>
-        <td>{{ task.get_priority_display }}</td>
+        <td>{{ task.get_priority_display }}
+        {% if task.is_completed %} <span class="btn btn-success disabled float-right"><i class="bi bi-check"></i> Task is done</span>{% endif %}</td>
       </tr>
 
       {% elif  task.priority == 4 %}
@@ -62,7 +65,8 @@
         <td>{{ task.name }}</td>
         <td>{{ task.deadline | date:"d M Y" }}</td>
         <td>{{ task.task_type }}</td>
-        <td>{{ task.get_priority_display }}</td>
+        <td>{{ task.get_priority_display }}
+        {% if task.is_completed %} <span class="btn btn-success disabled float-right"><i class="bi bi-check"></i> Task is done</span>{% endif %}</td>
       </tr>
     {% endif %}
     {% endfor %}
