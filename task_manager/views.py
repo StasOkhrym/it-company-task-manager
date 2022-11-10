@@ -7,7 +7,13 @@ from django.urls import reverse_lazy
 from django.utils.datetime_safe import datetime
 from django.views import generic
 
-from task_manager.forms import TaskSearchForm, WorkerSearchForm, PositionSearchForm, WorkerTaskFilterForm
+from task_manager.forms import (
+    TaskSearchForm,
+    WorkerSearchForm,
+    PositionSearchForm,
+    WorkerTaskFilterForm,
+    TaskCreateForm,
+)
 from task_manager.models import Worker, Task, Position
 
 
@@ -69,7 +75,7 @@ class TaskDetailView(LoginRequiredMixin, generic.DetailView):
 
 class TaskCreateView(LoginRequiredMixin, generic.CreateView):
     model = Task
-    fields = "__all__"
+    form_class = TaskCreateForm
     success_url = reverse_lazy("task_manager:task-list")
 
 
@@ -119,7 +125,9 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
 
         not_completed = self.request.GET.get("not_completed", "")
 
-        context["search_form"] = WorkerTaskFilterForm(initial={"not_completed": not_completed})
+        context["search_form"] = WorkerTaskFilterForm(
+            initial={"not_completed": not_completed}
+        )
         return context
 
     def get_queryset(self):

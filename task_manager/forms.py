@@ -1,5 +1,17 @@
 from django import forms
 
+from task_manager.models import Task
+
+
+class TaskCreateForm(forms.ModelForm):
+    deadline = forms.DateField(
+        widget=forms.SelectDateWidget,
+    )
+
+    class Meta:
+        model = Task
+        fields = "__all__"
+
 
 class TaskSearchForm(forms.Form):
     name = forms.CharField(
