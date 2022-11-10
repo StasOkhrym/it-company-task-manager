@@ -13,6 +13,8 @@ from task_manager.forms import (
     PositionSearchForm,
     WorkerTaskFilterForm,
     TaskForm,
+    WorkerCreateForm,
+    WorkerUpdateForm,
 )
 from task_manager.models import Worker, Task, Position
 
@@ -142,7 +144,7 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
 
 class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
     model = Worker
-    fields = "__all__"
+    form_class = WorkerCreateForm
 
     def get_success_url(self):
         return reverse_lazy("task_manager:worker-detail", args=[self.object.pk])
@@ -150,7 +152,7 @@ class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
 
 class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Worker
-    fields = "__all__"
+    form_class = WorkerUpdateForm
 
     def get_success_url(self):
         return reverse_lazy("task_manager:worker-detail", args=[self.object.pk])

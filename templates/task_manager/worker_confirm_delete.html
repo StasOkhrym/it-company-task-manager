@@ -7,6 +7,6 @@
     {% csrf_token %}
     <hr>
     <input type="submit" value="Yes" class="btn btn-danger">
-    <a href="{% url 'task_manager:worker-detail' pk=task.id %}" class = "btn btn-secondary">Cancel</a>
+    <a href="{% url 'task_manager:worker-detail' pk=worker.id %}" class = "btn btn-secondary">Cancel</a>
   </form>
 {% endblock %}
