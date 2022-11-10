@@ -22,19 +22,19 @@ class AdminSiteTest(TestCase):
             position=self.test_position
         )
 
-    def test_driver_position_listed(self):
+    def test_worker_position_listed(self):
         url = reverse("admin:task_manager_worker_changelist")
         response = self.client.get(url)
 
         self.assertContains(response, self.worker.position)
 
-    def test_driver_detailed_license_number_listed(self):
+    def test_worker_detailed_position_listed(self):
         url = reverse("admin:task_manager_worker_change", args=[self.worker.id])
         response = self.client.get(url)
 
         self.assertContains(response, self.worker.position)
 
-    def test_license_number_in_driver_add(self):
+    def test_position_in_driver_add(self):
         url = reverse("admin:task_manager_worker_add")
         response = self.client.get(url)
 
