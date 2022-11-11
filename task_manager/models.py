@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -42,7 +43,7 @@ class Task(models.Model):
     is_completed = models.BooleanField()
     priority = models.IntegerField(choices=PRIORITY_CHOICES, default=3)
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
-    assignees = models.ManyToManyField(Worker, related_name="tasks")
+    assignees = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="tasks")
 
     class Meta:
         ordering = ["priority"]
