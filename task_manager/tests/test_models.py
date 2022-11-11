@@ -1,6 +1,5 @@
-import datetime
-
 from django.contrib.auth import get_user_model
+from django.db.models.functions import datetime
 from django.test import TestCase
 
 from task_manager.models import TaskType, Position, Task

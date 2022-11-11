@@ -263,6 +263,7 @@ class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = TaskType
     template_name = "task_manager/task_type_form.html"
     context_object_name = "task_type"
+    queryset = TaskType.objects.select_related("task")
     fields = "__all__"
 
     def get_success_url(self):
