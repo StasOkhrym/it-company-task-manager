@@ -12,11 +12,13 @@
 
         {% if closest_deadline == 0 %}
            <li class="list-group-item list-group-item-warning"><strong>Closest deadline is today</strong></li>
+        {% elif closest_deadline == -1 %}
+          <li class="list-group-item list-group-item-secondary"><strong>There are no tasks for now!</strong></li>
         {% else %}
           <li class="list-group-item list-group-item-secondary"><strong>Closest deadline expires in {{ closest_deadline }} day{{ closest_deadline|pluralize }}</strong></li>
         {% endif %}
 
-        {% if expired_tasks == 0 %}
+        {% if expired_tasks %}
           <li class="list-group-item list-group-item-secondary"><strong>Good job!!! Company has no expired tasks</strong></li>
         {% else %}
           <li class="list-group-item list-group-item-danger"><strong>Company has {{ expired_tasks }} expired task{{ expired_tasks|pluralize }}</strong></li>

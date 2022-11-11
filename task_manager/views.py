@@ -26,8 +26,12 @@ def index(request):
     deadlines = [
         (task.deadline - datetime.now().date()).days for task in Task.objects.all()
     ]
-    expired_tasks = len(list(filter(lambda a: a < 0, deadlines)))
-    closest_deadline = min(filter(lambda a: a >= 0, deadlines))
+
+    expired_tasks = len([deadline for deadline in deadlines if deadline < 0])
+    try:
+        closest_deadline = sorted([deadline for deadline in deadlines if deadline >= 0])[0]
+    except IndexError:
+        closest_deadline = -1
 
     num_visits = request.session.get("num_visits", 1)
     request.session["num_visits"] = num_visits + 1
