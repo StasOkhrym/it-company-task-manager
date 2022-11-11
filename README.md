@@ -4,6 +4,9 @@ Django project where developers team can control and manage their tasks.
 ## You can check it via link below
 [Company task manager](https://company-task-manager.onrender.com)
 
+**username**: tyler.durden<br>
+**password**: 1qazcde3
+
 ### Installation
 Python3 must be installed
 ```shell
