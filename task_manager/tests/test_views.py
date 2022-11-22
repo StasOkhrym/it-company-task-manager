@@ -3,7 +3,7 @@ from django.db.models.functions import datetime
 from django.test import TestCase
 from django.urls import reverse
 
-from task_manager.models import TaskType, Position, Worker, Task
+from task_manager.models import TaskType, Position, Task
 
 
 class PublicTests(TestCase):

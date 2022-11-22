@@ -217,7 +217,7 @@ class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
 class TaskTypeListView(LoginRequiredMixin, generic.ListView):
     model = TaskType
     paginate_by = 5
-    queryset = TaskType.objects.all()
+    queryset = TaskType.objects.prefetch_related("task_set__assignees")
     context_object_name = "task_type_list"
     template_name = "task_manager/task_type_list.html"
 
@@ -267,7 +267,6 @@ class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = TaskType
     template_name = "task_manager/task_type_form.html"
     context_object_name = "task_type"
-    queryset = TaskType.objects.select_related("task")
     fields = "__all__"
 
     def get_success_url(self):
