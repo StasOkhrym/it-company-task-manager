@@ -7,11 +7,35 @@ from task_manager.models import TaskType, Position, Task
 
 
 class PublicTests(TestCase):
-    def test_login(self):
-        response = self.client.get(reverse("login"))
+    def test_login_required(self):
+        response_login = self.client.get(reverse("login"))
+        response_task_type = self.client.get(reverse("task_manager:task-type-list"))
+        response_worker = self.client.get(reverse("task_manager:worker-list"))
+        response_task = self.client.get(reverse("task_manager:task-list"))
+        response_position = self.client.get(reverse("task_manager:position-list"))
 
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "registration/login.html")
+        self.assertEqual(response_login.status_code, 200)
+        self.assertNotEqual(response_task_type.status_code, 200)
+        self.assertNotEqual(response_worker.status_code, 200)
+        self.assertNotEqual(response_task.status_code, 200)
+        self.assertNotEqual(response_position.status_code, 200)
+        self.assertTemplateUsed("registration/login.html")
+
+    def test_login_page(self):
+        get_user_model().objects.create_user(
+            username="TEST.user",
+            password="1qazcded3"
+        )
+
+        form_data = {
+            "username": "TEST.user",
+            "password": "1qazcded3"
+        }
+        response = self.client.post(reverse("login"), data=form_data)
+
+        self.assertTemplateUsed("registration/login.html")
+        self.assertRedirects(response, "/")
+        self.assertEqual(response.status_code, 302)
 
 
 class PrivateTests(TestCase):
@@ -100,3 +124,37 @@ class PrivateTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "task_manager/worker_detail.html")
+
+    def test_create_worker(self):
+        form_data = {
+            "username": "test.user",
+            "first_name": "Test Name",
+            "last_name": "Test Surname",
+            "password1": "1qazcde3",
+            "password2": "1qazcde3",
+        }
+        self.client.post(reverse("task_manager:worker-create"), data=form_data)
+        new_user = get_user_model().objects.get(username=form_data["username"])
+
+        self.assertTemplateUsed("task_manager/worker_form.html")
+        self.assertEqual(new_user.first_name, form_data["first_name"])
+        self.assertEqual(new_user.last_name, form_data["last_name"])
+
+    def test_update_worker(self):
+        get_user_model().objects.create_user(
+            username="TEST.user",
+            password="1qazcded3"
+        )
+        form_data = {
+            "username": "test.user",
+            "first_name": "Test Name",
+            "last_name": "Test Surname",
+            "password1": "1qazcde3",
+            "password2": "1qazcde3",
+        }
+        self.client.post(reverse("task_manager:worker-update", args=[2]), data=form_data)
+        updated_user = get_user_model().objects.get(id=2)
+
+        self.assertTemplateUsed("task_manager/worker_form.html")
+        self.assertEqual(updated_user.first_name, form_data["first_name"])
+        self.assertEqual(updated_user.last_name, form_data["last_name"])

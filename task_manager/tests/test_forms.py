@@ -36,7 +36,7 @@ class PrivateWorkerTests(TestCase):
         self.assertEqual(new_user.last_name, form_data["last_name"])
         self.assertEqual(new_user.position, None)
 
-    def test_delete_driver(self):
+    def test_delete_worker(self):
         response = self.client.post(
             reverse("task_manager:worker-delete", kwargs={"pk": self.worker.id})
         )
