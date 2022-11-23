@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>
+    Task type list
+    <span class="float-right">
+      <a href="{% url 'task_manager:task-type-create' %}" class="btn btn-primary link-to-page">
+       Create
+      </a>
+    </span>
+  </h1>
+  {% block search_form %}
+  {% include "includes/search_form.html" %}
+  {% endblock %}
+
+  {% if task_type_list %}
+    <table class="table table-hover">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Count task of this type</th>
+    </tr>
+    {% for task_type in task_type_list %}
+        <tr onclick="window.location='{% url 'task_manager:task-type-detail' pk=task_type.id%}'">
+        <td>{{ task_type.id }}</td>
+        <td>{{ task_type.name }}</td>
+        <td>{{ task_type.task_set.count }}</td>
+    {% endfor %}
+  {% else %}
+    <p>There are no task types yet!</p>
+  {% endif %}
+  <br>
+  </table>
+{% endblock %}

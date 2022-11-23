@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h1>
+    Position List
+    <span class="float-right">
+      <a href="{% url 'task_manager:position-create' %}" class="btn btn-primary link-to-page">
+       <i class="bi bi-plus-lg"></i> Create
+      </a>
+    </span>
+  </h1>
+  {% block search_form %}
+  {% include "includes/search_form.html" %}
+  {% endblock %}
+
+  {% if position_list %}
+    <table class="table table-hover">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>On this position</th>
+    </tr>
+    {% for position in position_list %}
+        <tr onclick="window.location='{% url 'task_manager:position-detail' pk=position.id%}'">
+        <td>{{ position.id }}</td>
+        <td>{{ position.name }}</td>
+        <td>{{ position.worker_set.count }} worker{{ position.worker_set.count|pluralize }}</td>
+    {% endfor %}
+  {% else %}
+    <p>There are no team in company!</p>
+  {% endif %}
+  <br>
+  </table>
+{% endblock %}
