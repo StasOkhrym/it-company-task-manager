@@ -10,7 +10,7 @@ Django project where developers team can control and manage their tasks.
 ### Installation
 Python3 must be installed
 ```shell
-git clone https://github.com/AVyha/newspaper-agency.git
+https://github.com/StasOkhrym/it-company-task-manager.git
 git checkout -b develop
 venv\Scripts\activate (on Windows)
 source venv/bin/activate (on macOS)
